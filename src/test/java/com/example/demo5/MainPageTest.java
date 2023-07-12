@@ -36,8 +36,9 @@ public class MainPageTest {
         searchField.submit();
 
         WebElement searchPageField = driver.findElement(By.cssSelector("#sb_form_q"));
-        assertEquals(input, searchPageField.getAttribute("value"));
+        assertEquals(input, searchPageField.getAttribute("value"),"Значение в поле ввода изменилось");
     }
+
 }
 
 
