@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BingSearchTest {
     private WebDriver driver;
 
+
     @BeforeEach
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
@@ -54,11 +55,8 @@ public class BingSearchTest {
         MainPage mp = new MainPage(driver);
         mp.sendText(input);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.and(
-                ExpectedConditions.attributeContains(By.cssSelector("h2 > a[href]"), "href", "selenium"),
-                ExpectedConditions.elementToBeClickable(By.cssSelector("h2 > a[href]"))
-        ));
+        mp.waitForUrl(driver, 5, "href", "selenium");
+
         ResultsPage rp = new ResultsPage(driver);
         rp.clickElement(0);
 
@@ -66,20 +64,20 @@ public class BingSearchTest {
         driver.switchTo().window(tabs.get(1));
         assertEquals("https://www.selenium.dev/", driver.getCurrentUrl(), "URL отличаются");
     }
+
     @Test
     public void searchResultsTest() {
         String input = "Selenium";
         MainPage mp = new MainPage(driver);
         mp.sendText(input);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.and(
-                ExpectedConditions.attributeContains(By.cssSelector("h2 > a[href]"), "href", "selenium"),
-                ExpectedConditions.elementToBeClickable(By.cssSelector("h2 > a[href]"))
-        ));
+
+        mp.waitForUrl(driver, 5, "href", "selenium");
+
         ResultsPage rp = new ResultsPage(driver);
         rp.clickElement(0);
-        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
+
+        rp.switchToTab(driver, 1);
+
         assertEquals("https://www.selenium.dev/", driver.getCurrentUrl(), "Открылась неверная ссылка");
     }
 
